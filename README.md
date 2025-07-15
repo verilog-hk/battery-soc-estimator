@@ -1,20 +1,16 @@
-# 🔋 Battery SoC Estimator using ML & Signal Smoothing
+🔋 Battery SoC Estimator using ML & Smoothing Techniques
 
-This project implements a **machine learning-based State-of-Charge (SoC) estimation system** using battery parameters like voltage, current, and temperature. The system combines:
-
-- 🔍 Supervised ML models (Linear Regression, Random Forest)
-- 🧹 Smoothing filter (Moving Average)
-- 📊 Visualization of battery SoC
+This project predicts the State of Charge (SoC) of a battery using supervised machine learning (ML) models trained on synthetic battery data. It combines signal smoothing (moving average filtering) with model-based predictions to improve stability and real-world usability for Battery Management Systems (BMS).
 
 ---
 
-## 🧠 Project Overview
+## 🧠 Overview
 
-Accurate SoC prediction is critical for battery health and optimization. This project:
+In BMS systems, raw SoC predictions often fluctuate due to sensor noise and dynamic loads. This project aims to:
 
-1. Generates synthetic battery data.
-2. Predicts SoC using ML models.
-3. Applies a moving average filter to stabilize the predictions.
+- 📊 Use **ML models** (Linear Regression, Random Forest) for accurate SoC prediction.
+- 🧹 Apply **signal smoothing** to eliminate spikes in prediction.
+- 🧪 Use synthetic data to simulate real-world conditions.
 
 ---
 
@@ -22,53 +18,83 @@ Accurate SoC prediction is critical for battery health and optimization. This pr
 
 | Folder         | Description |
 |----------------|-------------|
-| Data      | Contains `battery_data.csv` with 1000 synthetic battery readings |
-| Scripts   | All core Python scripts: data generation, training, evaluation |
-| ML_Model    | Optional folder to store trained model `.pkl` files |
-| Filtering   | Optional smoothing logic (e.g., `moving_average.py`) |
-| Plots       | Visualization outputs (e.g., PNG plots of SoC) |
-| README.md    | This file |
+| `Data/`        | Contains `battery_data.csv` (synthetic data) |
+| `Scripts/`     | Python files for data generation, training, and filtering |
+| `Filtering/`   | Smoothing techniques (moving average) |
+| `ML_Model/`    | (Optional) Saved model files |
+| `Plots/`       | SoC plots, comparison graphs |
+| `README.md`    | Project explanation (this file) |
 
 ---
 
-📦 Dependencies
+## 📦 Dependencies
 
-Install required packages:
+Install all required packages:
 
 bash
-pip install pandas numpy matplotlib seaborn scikit-learn
+pip install pandas numpy scikit-learn matplotlib seaborn
 
 
 
-Key Scripts
-
-
+🧪 Scripts Summary
 dataset.py
+Creates 1000 synthetic battery samples with:
 
-Generates synthetic data with voltage, current, temperature.
+Voltage: 3.0 V – 4.2 V
 
-SoC = f(voltage, current) + Gaussian noise
+Current: 0.1 A – 2.0 A
 
-Output: battery_data.csv
+Temperature: 20 °C – 45 °C
 
-explore_dataset.py
-
-Uses seaborn to plot relationships between features.
+SoC computed with a derived relation and noise.
 
 train_model.py
-
 Trains a Linear Regression model.
 
-Achieves MSE ≈ 4.44, R² ≈ 0.99
+🧮 Results:
+
+Mean Squared Error (MSE): 4.44
+
+R² Score: 0.99
 
 train_rf_model.py
+Trains a Random Forest Regressor.
 
-Trains a Random Forest model.
+🧮 Results:
 
-Slightly higher MSE (≈ 5.57), same R² (≈ 0.99)
+MSE: 5.57
+
+R² Score: 0.99
 
 smoothing.py
+Applies a moving average filter (window = 10) to predicted SoC values.
 
-Applies a moving average filter (window=10) to smooth SoC values.
+Improves stability for real-time applications.
 
-Reduces prediction spikes for stable BMS use.
+📈 Visual Results
+
+✅ Linear Regression
+Performs best overall with lower MSE.
+
+More efficient and faster to train.
+
+✅ Random Forest
+Handles non-linearity better, but slightly higher MSE.
+
+No added accuracy benefit in this case.
+
+✅ Moving Average Smoothing
+Removes prediction spikes.
+
+Final plot shows smoother curve, more suitable for real-time SoC tracking.
+
+🚀 Future Work
+Integrate real sensor data for validation.
+
+Add Kalman or LMS filters for adaptive correction.
+
+Use deep learning (e.g., LSTM) to capture time-series behavior.
+
+Model battery aging and temperature effects.
+
+
