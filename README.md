@@ -1,79 +1,74 @@
-Project Title: Battery State of Charge (SoC) Estimation using Coulomb Counting in MATLAB Simulink
+# 🔋 Battery SoC Estimator using ML & Signal Smoothing
 
-Description: A brief overview of the project, highlighting the importance of SoC estimation and the chosen methodology (Coulomb Counting).
+This project implements a **machine learning-based State-of-Charge (SoC) estimation system** using battery parameters like voltage, current, and temperature. The system combines:
 
-Features:
+- 🔍 Supervised ML models (Linear Regression, Random Forest)
+- 🧹 Smoothing filter (Moving Average)
+- 📊 Visualization of battery SoC
 
-MATLAB Simulink-based simulation.
+---
 
-Real-time SoC tracking using current integration.
+## 🧠 Project Overview
 
-Dynamic load conditions (DC motor with torque).
+Accurate SoC prediction is critical for battery health and optimization. This project:
 
-Visualization of SoC, voltage, and current.
+1. Generates synthetic battery data.
+2. Predicts SoC using ML models.
+3. Applies a moving average filter to stabilize the predictions.
 
-Methodology: Coulomb Counting
+---
 
-Explanation of the Coulomb Counting principle.
+## 📁 Folder Structure
 
-The formula used: 
+| Folder         | Description |
+|----------------|-------------|
+| Data      | Contains `battery_data.csv` with 1000 synthetic battery readings |
+| Scripts   | All core Python scripts: data generation, training, evaluation |
+| ML_Model    | Optional folder to store trained model `.pkl` files |
+| Filtering   | Optional smoothing logic (e.g., `moving_average.py`) |
+| Plots       | Visualization outputs (e.g., PNG plots of SoC) |
+| README.md    | This file |
 
-SOC(t)=SOC(t−1)+
-int_0 
-t
- 
-fracIC_bat
-cdotdt 
+---
 
-Breakdown of terms (
+📦 Dependencies
 
-SOC(t), SOC(t−1), C_bat, I(t)) 
+Install required packages:
 
-Discussion of considerations:
-
-Accuracy of initial SOC 
-
-Accumulation of measurement errors 
-
-Sensitivity to sampling rate and noise 
-
-Computational efficiency and ease of implementation 
-
-
-System Design & Implementation (MATLAB Simulink)
-
-Description of the Simulink model components (Battery block, DC Motor block, integrator, custom function, display blocks).
+bash
+pip install pandas numpy matplotlib seaborn scikit-learn
 
 
 
-Explanation of how current is processed and integrated to calculate SoC.
+Key Scripts
 
 
-Include an embedded image of your Simulink circuit diagram (Figure 1 and Figure 2 from your report).
+dataset.py
 
-Results and Discussion:
+Generates synthetic data with voltage, current, temperature.
 
-Summarize the key findings, including the initial and final SoC values.
+SoC = f(voltage, current) + Gaussian noise
 
-Discuss the model's accuracy in tracking discharge and its practical applicability.
+Output: battery_data.csv
 
+explore_dataset.py
 
-Mention the validation under dynamic load conditions.
+Uses seaborn to plot relationships between features.
 
-Include an embedded image of your result (Figure 3 from your report).
+train_model.py
 
-How to Run the Simulation:
+Trains a Linear Regression model.
 
-Instructions on opening and running the Simulink model.
+Achieves MSE ≈ 4.44, R² ≈ 0.99
 
-Prerequisites (MATLAB with Simulink).
+train_rf_model.py
 
-Future Enhancements: (Crucially, this addresses the "ML + Signal Filtering" aspect)
+Trains a Random Forest model.
 
-Integrating temperature effects.
+Slightly higher MSE (≈ 5.57), same R² (≈ 0.99)
 
-Implementation with error correction techniques like Kalman Filters.
+smoothing.py
 
-Exploring machine learning approaches for SoC estimation.
+Applies a moving average filter (window=10) to smooth SoC values.
 
-Extending the model to include battery aging and capacity fade.
+Reduces prediction spikes for stable BMS use.
